@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import ipdb
+from classes.many_to_many import Coffee, Customer, Order
 
-from classes.many_to_many import Customer
-from classes.many_to_many import Order
-from classes.many_to_many import Coffee
+def debug():
+    coffee = Coffee("Latte")
+    customer = Customer("Alice")
+    order = Order(customer, coffee, 3.5)
+    print(f"Coffee: {coffee.name}")
+    print(f"Customer: {customer.name}")
+    print(f"Order: {order.price}")
 
-if __name__ == '__main__':
-    print("HELLO! :) let's debug")
-
-    ipdb.set_trace()
+if __name__ == "__main__":
+    debug()

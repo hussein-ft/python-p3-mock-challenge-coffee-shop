@@ -10,8 +10,8 @@ class TestCustomer:
 
     def test_has_name(self):
         """Customer is initialized with name"""
-        customer = Customer("Steve")
-        assert customer.name == "Steve"
+        customer = Customer("Alice")
+        assert customer.name == "Alice"
 
 
     def test_name_is_mutable_string(self):
@@ -21,36 +21,16 @@ class TestCustomer:
         
         assert customer.name == "Stove"
         
-        # comment out the next two lines if using Exceptions
-        customer.name = 1
-        assert customer.name == "Stove"
-        
-        assert isinstance(customer.name, str)
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     customer.name = 1
+        with pytest.raises(ValueError):
+            customer.name = 1
 
     def test_name_length(self):
         """name is between 1 and 15 characters"""
         customer = Customer("Steve")
         assert len(customer.name) == 5
 
-        # comment out the next two lines if using Exceptions
-        customer.name = ""
-        assert customer.name == "Steve"
-        
-        # comment out the next two lines if using Exceptions
-        customer.name = "TooLongForAName!"
-        assert customer.name == "Steve"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Customer("TooLongForAName!")
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Customer("")
+        with pytest.raises(ValueError):
+            customer.name = ""
 
     def test_has_many_orders(self):
         """customer has many orders"""
@@ -133,6 +113,18 @@ class TestCustomer:
         assert order_2.customer == customer_2
         assert order_2.coffee == coffee_2
         
+        # additional assertions from the suggested code change
+        assert order_1.price == 2.0
+        assert order_2.price == 5.0
+
+    def test_coffees(self):
+        customer = Customer("Charlie")
+        coffee1 = Coffee("Latte")
+        coffee2 = Coffee("Espresso")
+        customer.create_order(coffee1, 3.0)
+        customer.create_order(coffee2, 4.0)
+        assert coffee1 in customer.coffees()
+        assert coffee2 in customer.coffees()
         
     # def test_most_aficionado(self):
     #     """the customer who has spent the most on the coffee instance provided."""

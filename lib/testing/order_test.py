@@ -1,8 +1,5 @@
 import pytest
-
-from classes.many_to_many import Coffee
-from classes.many_to_many import Customer
-from classes.many_to_many import Order
+from classes.many_to_many import Order, Customer, Coffee
 
 
 class TestOrders:
@@ -106,3 +103,35 @@ class TestOrders:
         assert (len(Order.all) == 2.0)
         assert (order_1 in Order.all)
         assert (order_2 in Order.all)
+
+
+class TestOrder:
+    """Tests for the Order class"""
+
+    def test_order_initialization(self):
+        customer = Customer("Charlie")
+        coffee = Coffee("Macchiato")
+        order = Order(customer, coffee, 4.5)
+        assert order.customer == customer
+        assert order.coffee == coffee
+        assert order.price == 4.5
+
+    def test_price_is_immutable(self):
+        coffee = Coffee("Mocha")
+        customer = Customer('Steve')
+        order_1 = Order(customer, coffee, 2.0)
+        with pytest.raises(AttributeError):
+            order_1.price = 3.0
+
+    def test_get_all_orders(self):
+        Order.all = []
+        coffee = Coffee("Mocha")
+        customer = Customer('Wayne')
+        customer_2 = Customer('Dima')
+        order_1 = Order(customer, coffee, 2.0)
+        order_2 = Order(customer_2, coffee, 5.0)
+        assert len(Order.all) == 2
+
+    def test_invalid_order(self):
+        with pytest.raises(ValueError):
+            Order("NotACustomer", "NotACoffee", -5)
